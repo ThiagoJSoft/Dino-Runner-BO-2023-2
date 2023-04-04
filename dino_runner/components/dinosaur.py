@@ -19,6 +19,8 @@ class Dinosaur:
         self.dino_duck = False
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
+        self.dino_dead = False
+        
         
         
 

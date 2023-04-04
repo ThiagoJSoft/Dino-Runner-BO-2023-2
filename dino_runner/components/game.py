@@ -2,7 +2,13 @@ import pygame
 
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.dinosaur import Dinosaur
-from dino_runner.components.obstacles.obstacle import Cloud
+from dino_runner.components.obstacles.cloud import Cloud
+from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
+pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load(r"C:\Users\gtrlo\Downloads\Jala.mp3")
+pygame.mixer.music.play(-1)
+
 
 class Game:
     def __init__(self):
@@ -16,7 +22,10 @@ class Game:
         self.x_pos_bg = 0
         self.y_pos_bg = 380
         self.player = Dinosaur()
-        self.obstacle = Cloud()
+        self.cloud = Cloud()
+        self.obstacle_manager = ObstacleManager()
+        
+
         
 
         
@@ -38,15 +47,22 @@ class Game:
 
     def update(self):
         user_input = pygame.key.get_pressed()
+        self.cloud.update()
         self.player.update(user_input)
+        self.obstacle_manager.update(self.game_speed, self.player)
+        if self.player.dino_dead:
+            self.playing = False
+        pygame.display.update()
+        pygame.display.flip()
+
         
     def draw(self):
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
         self.player.draw(self.screen)
-        self.obstacle.draw(self.screen)
-        self.obstacle.update()
+        self.cloud.draw(self.screen)
+        self.obstacle_manager.draw(self.screen)
         pygame.display.update()
         pygame.display.flip()
 
@@ -56,7 +72,6 @@ class Game:
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
-        self.obstacle.draw(BG)
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
