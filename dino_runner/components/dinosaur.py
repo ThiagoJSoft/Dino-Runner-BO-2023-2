@@ -1,6 +1,9 @@
 import pygame
 from dino_runner.utils.constants import (RUNNING, RUNNING_SHIELD,DUCKING, DUCKING_SHIELD, JUMPING, JUMPING_SHIELD,
-                                         DEFAULT_TYPE, SHIELD_TYPE)
+                                         DEFAULT_TYPE, SHIELD_TYPE,
+                                         RUNNING_HAMMER, DUCKING_HAMMER, JUMPING_HAMMER, HAMMER_TYPE, HAMMER
+
+)
                                          
 
 
@@ -12,9 +15,9 @@ class Dinosaur:
     
 
     def __init__ (self):
-        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD}
-        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD}
-        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD}
+        self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
+        self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER}
+        self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
         self.dino_rect = self.image.get_rect()
@@ -26,6 +29,7 @@ class Dinosaur:
         self.dino_jump = False
         self.jump_vel = self.JUMP_VEL
         self.dino_dead = False
+       
         
         
         
@@ -55,6 +59,8 @@ class Dinosaur:
             self.dino_jump = False
         if self.step_index >= 10:
             self.step_index = 0
+
+        
         
         
 
@@ -91,6 +97,8 @@ class Dinosaur:
     def set_power_up(self, power_up):
         if power_up.type == SHIELD_TYPE:
             self.type = SHIELD_TYPE
+        elif power_up.type == HAMMER_TYPE:
+            self.type = HAMMER_TYPE
 
         
     
