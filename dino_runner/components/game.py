@@ -3,7 +3,8 @@ import pygame
 from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.cloud import Cloud
-from dino_runner.components.obstacles.obstacle_manager import ObstacleManager
+from dino_runner.components.obstacles.obstacle_manager import ObstacleManager  
+from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 pygame.init()
 pygame.mixer.init()
 pygame.mixer.music.load(r"C:\Users\gtrlo\Downloads\Jala.mp3")
@@ -24,6 +25,9 @@ class Game:
         self.player = Dinosaur()
         self.cloud = Cloud()
         self.obstacle_manager = ObstacleManager()
+        self.power_up_manager = PowerUpManager()
+        self.points = 0
+
         
 
         
@@ -50,10 +54,12 @@ class Game:
         self.cloud.update()
         self.player.update(user_input)
         self.obstacle_manager.update(self.game_speed, self.player)
+        self.power_up_manager.update(self.game_speed, self.points, self.player)
+        self.points += 1
         if self.player.dino_dead:
             self.playing = False
-        pygame.display.update()
-        pygame.display.flip()
+        
+        
 
         
     def draw(self):
@@ -63,6 +69,10 @@ class Game:
         self.player.draw(self.screen)
         self.cloud.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
+        self.power_up_manager.draw(self.screen)
+
+        
+
         pygame.display.update()
         pygame.display.flip()
 
