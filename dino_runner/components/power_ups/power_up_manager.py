@@ -29,7 +29,7 @@ class PowerUpManager:
         random_power_up.rect.x = x
         random_power_up.rect.y = y
         self.power_ups.append(random_power_up)
-
+    
     def draw(self, screen):
         for power_up in self.power_ups:
             power_up.draw(screen)
