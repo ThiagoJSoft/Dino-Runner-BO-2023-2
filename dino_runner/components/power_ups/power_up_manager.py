@@ -21,6 +21,7 @@ class PowerUpManager:
                 player.set_power_up(power_up)
             power_up.update(game_speed, player)
             
+            
 
     def generate_power_up(self, game_speed, player):
         x = random.randint(SCREEN_WIDTH + 200, SCREEN_WIDTH + 400)
@@ -29,6 +30,7 @@ class PowerUpManager:
         random_power_up.rect.x = x
         random_power_up.rect.y = y
         self.power_ups.append(random_power_up)
+        
     
     def draw(self, screen):
         for power_up in self.power_ups:

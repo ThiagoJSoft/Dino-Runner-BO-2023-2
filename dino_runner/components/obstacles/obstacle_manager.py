@@ -14,24 +14,13 @@ class ObstacleManager:
             if obstacle.rect.x < -obstacle.rect.width:
                 self.obstacles.pop()
             obstacle.update(game_speed, player)
-    def draw(self, screen):
+    
+    
+    def draw(self, screen, player):
         for obstacle in self.obstacles:
-            obstacle.draw(screen)
+            obstacle.draw(screen, player)
             
-        
-
     
-
-    
-        
-        
-
-
-    
-
-    def draw(self, screen):
-        for obstacle in self.obstacles:
-            obstacle.draw(screen)
     
 
 

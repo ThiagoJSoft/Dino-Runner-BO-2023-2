@@ -1,13 +1,13 @@
 import pygame
 from dino_runner.components import text_utils
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, SOL, ruta_musica
 from dino_runner.components.dinosaur import Dinosaur
 from dino_runner.components.obstacles.cloud import Cloud
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager  
 from dino_runner.components.power_ups.power_up_manager import PowerUpManager
 pygame.init()
 pygame.mixer.init()
-pygame.mixer.music.load(r"C:\Users\gtrlo\Downloads\Jala.mp3")
+pygame.mixer.music.load(ruta_musica)
 pygame.mixer.music.play(-1)
 
 
@@ -29,6 +29,7 @@ class Game:
         self.power_up_manager = PowerUpManager()
         self.points = 0
         self.death_count = 0
+        
 
         
 
@@ -70,6 +71,8 @@ class Game:
             if self.player.dino_dead:
                 self.playing = False
                 self.death_count += 1
+            
+
         
         
 
@@ -79,15 +82,18 @@ class Game:
             self.clock.tick(FPS)
             self.screen.fill((255, 255, 255))
             self.draw_background()
+            if self.player.hammering:
+                self.player.draw_hammer(self.screen)
             self.player.draw(self.screen)
             self.cloud.draw(self.screen)
-            self.obstacle_manager.draw(self.screen)
+            self.obstacle_manager.draw(self.screen, self.player)
             self.power_up_manager.draw(self.screen)
             self.draw_score()
         else:
             self.draw_menu()
         pygame.display.update()
         pygame.display.flip()
+        
 
         
 
@@ -95,10 +101,13 @@ class Game:
         image_width = BG.get_width()
         self.screen.blit(BG, (self.x_pos_bg, self.y_pos_bg))
         self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
+        self.screen.blit(SOL,(0, 0))
         if self.x_pos_bg <= -image_width:
             self.screen.blit(BG, (image_width + self.x_pos_bg, self.y_pos_bg))
             self.x_pos_bg = 0
         self.x_pos_bg -= self.game_speed 
+        
+        
 
     def draw_score(self):
         score, score_rect = text_utils.get_message('Points: ' + str(self.points), 20, 1000, 40)
@@ -127,7 +136,9 @@ class Game:
         self.player = Dinosaur()
         self.obstacle_manager = ObstacleManager()
         self.power_up_manager = PowerUpManager()
+        self.points = 0
 
+    
 
 
     

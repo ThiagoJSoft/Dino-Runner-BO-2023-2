@@ -10,6 +10,7 @@ class Bird(Obstacle):
         self.rect.y = 260
         self.step_index = 0
         self.flying = True
+        
     
     def update(self, game_speed, player):
         if self.flying:

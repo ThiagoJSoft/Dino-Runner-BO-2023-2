@@ -1,7 +1,7 @@
 import pygame
 from dino_runner.utils.constants import (RUNNING, RUNNING_SHIELD,DUCKING, DUCKING_SHIELD, JUMPING, JUMPING_SHIELD,
                                          DEFAULT_TYPE, SHIELD_TYPE,
-                                         RUNNING_HAMMER, DUCKING_HAMMER, JUMPING_HAMMER, HAMMER_TYPE
+                                         RUNNING_HAMMER, DUCKING_HAMMER, JUMPING_HAMMER, HAMMER_TYPE, HAMMER
 
 )
                                          
@@ -18,6 +18,7 @@ class Dinosaur:
         self.run_img = {DEFAULT_TYPE: RUNNING, SHIELD_TYPE: RUNNING_SHIELD, HAMMER_TYPE: RUNNING_HAMMER}
         self.duck_img = {DEFAULT_TYPE: DUCKING, SHIELD_TYPE: DUCKING_SHIELD, HAMMER_TYPE: DUCKING_HAMMER}
         self.jump_img = {DEFAULT_TYPE: JUMPING, SHIELD_TYPE: JUMPING_SHIELD, HAMMER_TYPE: JUMPING_HAMMER}
+        self.hammer_img = {DEFAULT_TYPE: HAMMER, SHIELD_TYPE: HAMMER, HAMMER_TYPE: HAMMER}
         self.type = DEFAULT_TYPE
         self.image = self.run_img[self.type][0]
         self.dino_rect = self.image.get_rect()
@@ -31,20 +32,37 @@ class Dinosaur:
         self.dino_dead = False
         self.shield = False
         self.time_up_power_up = 0
+        self.hammering = False
+        self.hammer_rect = self.image.get_rect()
+        self.hammer_rect.x = self.X_POS + 40
+        self.hammer_rect.y = self.Y_POS + 20
 
+
+        
+        
+
+
+
+    
+
+        
+        
        
         
-        
-        
 
+
+    
 
     def update(self, user_input):
+
         if self.dino_jump:
             self.jump()
         if self.dino_duck:
-            self.duck()
+            self.duck() 
         if self.dino_run:
             self.run()
+        
+        
         
 
         
@@ -69,17 +87,28 @@ class Dinosaur:
             if time_to_show < 0:
                 self.reset()
 
+        if self.hammering and user_input[pygame.K_SPACE]:
+            self.hammer()
+            self.type = DEFAULT_TYPE
+        else:
+            self.hammer_rect.x = self.X_POS + 40
+            self.hammer_rect.y = self.Y_POS + 20
         
         
         
+        
+            
 
-
+        
+        
+        
+            
+            
+            
+            
 
     def draw(self, screen):
         screen.blit(self.image, self.dino_rect)
-        
-        
-        
 
 
     def run(self):
@@ -108,15 +137,34 @@ class Dinosaur:
             self.type = SHIELD_TYPE
             self.shield = True
             self.time_up_power_up = power_up.time_up 
-
-
         elif power_up.type == HAMMER_TYPE:
+            self.hammering = True
             self.type = HAMMER_TYPE
 
+    
+                                            
+        
+
+
+    
     def reset(self):
         self.type = DEFAULT_TYPE
         self.shield = False
         self.time_up_power_up = 0
+
+    def hammer(self):
+        self.hammer_rect.x += 40
+
+    def draw_hammer(self, screen):
+        screen.blit(HAMMER, self.hammer_rect)
+    
+    
+
+    
+
+
+    
+        
 
         
     
